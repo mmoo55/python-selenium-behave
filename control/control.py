@@ -3,10 +3,15 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-from session.session import session
+# from session.session import session
 
 
 class Control:
+    _session_handler = None
+
+    @classmethod
+    def set_session_handler(cls, session_handler):
+        cls._session_handler = session_handler
 
     def __init__(self, type, locator):
         """
@@ -20,10 +25,13 @@ class Control:
         self.locator = locator
         self.control: WebElement = None
         # self.driver = session_instance.get_browser()
-        self.driver = session.get_browser()
+        self.driver = None
 
+    def set_driver(self):
+        self.driver = self._session_handler.get_browser()
 
     def find(self):
+        self.set_driver()
         self.control = self.driver.find_element(self.type, self.locator)
 
     def scroll(self):

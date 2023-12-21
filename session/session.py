@@ -12,16 +12,20 @@ class Session:
     def get_instance(cls):
         if cls._instance is None:
             cls._instance = Session()
+            # cls.setup_browser(cls)
         return cls._instance
 
-    def __init__(self):
+    # def __init__(self):
+    #     self._browser = Browser().choose_browser(load_env.get_browser())
+
+    def setup_browser(self):
         self._browser = Browser().choose_browser(load_env.get_browser())
 
     def get_browser(self):
         return self._browser
 
-    def load_website(self):
-        self._browser.get()
+    def load_website(self, url):
+        self._browser.get(url)
 
     def close_session(self):
         self._browser.quit()
@@ -37,4 +41,4 @@ class Session:
         explicit_wait = WebDriverWait(self._browser, 10)
         explicit_wait.until(EC.alert_is_present())
 
-session = Session.get_instance()
+# session = Session.get_instance()
